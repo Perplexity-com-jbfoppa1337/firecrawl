@@ -18,7 +18,8 @@ type Provider =
   | "openrouter"
   | "fireworks"
   | "deepinfra"
-  | "vertex";
+  | "vertex"
+  | "perplexity_gateway";
 const defaultProvider: Provider = config.OLLAMA_BASE_URL ? "ollama" : "openai";
 
 const providerList: Record<Provider, any> = {
@@ -50,6 +51,16 @@ const providerList: Record<Provider, any> = {
       : {
           keyFile: "./gke-key.json",
         },
+  }),
+  // Perplexity Gateway is OpenAI-compatible: point createOpenAI at
+  // https://api.perplexity.ai/router/v1 and the SDK appends /chat/completions.
+  // Model ids are creator/model-name slugs (e.g. anthropic/claude-sonnet-5,
+  // openai/gpt-5.6-terra, perplexity/kimi-k3); GET /router/v1/models is both
+  // the catalog and the allowlist. Docs:
+  // https://docs.perplexity.ai/docs/gateway/quickstart
+  perplexity_gateway: createOpenAI({
+    apiKey: config.PERPLEXITY_API_KEY,
+    baseURL: config.PERPLEXITY_GATEWAY_BASE_URL,
   }),
 };
 
