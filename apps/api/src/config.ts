@@ -113,6 +113,18 @@ const configSchema = z.object({
   OPENAI_BASE_URL: z.string().optional(),
   OPENROUTER_API_KEY: z.string().optional(),
   XAI_API_KEY: z.string().optional(),
+
+  // Perplexity Gateway — one API key that fronts frontier models from
+  // Anthropic, OpenAI, Google, xAI, and Perplexity through an
+  // OpenAI-compatible schema. Docs: https://docs.perplexity.ai/docs/gateway/quickstart
+  // Never hardcode the key; resolve it from the environment.
+  PERPLEXITY_API_KEY: z.string().optional(),
+  // Overridable base URL; defaults to the production Gateway URL so callers
+  // only need PERPLEXITY_API_KEY set. The OpenAI SDK appends /chat/completions.
+  PERPLEXITY_GATEWAY_BASE_URL: z
+    .string()
+    .url()
+    .default("https://api.perplexity.ai/router/v1"),
   LLAMAPARSE_API_KEY: z.string().optional(),
   STRIPE_SECRET_KEY: z.string().optional(),
   AUTUMN_SECRET_KEY: z.string().optional(),
